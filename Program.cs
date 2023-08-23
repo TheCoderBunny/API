@@ -40,6 +40,7 @@ builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<IGuestDashboardRepository, GuestDashboardRepository>();
 
 var secretKey = builder.Configuration["TokenSecret"];
 byte[] secretKeyBytes = Encoding.UTF8.GetBytes(secretKey);

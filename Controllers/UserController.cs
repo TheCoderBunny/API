@@ -30,7 +30,6 @@ public class UserController : ControllerBase
 
         var user = _userRepository.GetUserByEmail(userEmail);
 
-        Console.WriteLine(user.userType);
         if (user.userType==0){
             return Unauthorized();
         }
