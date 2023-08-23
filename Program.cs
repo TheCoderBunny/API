@@ -37,6 +37,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 
 var secretKey = builder.Configuration["TokenSecret"];
 byte[] secretKeyBytes = Encoding.UTF8.GetBytes(secretKey);

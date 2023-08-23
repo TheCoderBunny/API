@@ -23,5 +23,15 @@ public class MainDbContext : DbContext
             entity.HasIndex(x => x.email).IsUnique();
             entity.Property(e => e.password).IsRequired();
         });
+
+        modelBuilder.Entity<Ticket>(entity =>
+        {
+            entity.HasKey(e => e.ticketId);
+        });
+
+        modelBuilder.Entity<Reservation>(entity =>
+        {
+            entity.HasKey(e => e.reservationId);
+        });
     }
 }
