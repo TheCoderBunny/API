@@ -29,6 +29,11 @@ public class MainDbContext : DbContext
             entity.HasKey(e => e.ticketId);
         });
 
+        modelBuilder.Entity<Booking>(entity =>
+        {
+            entity.HasKey(e => e.bookingId);
+        });
+
         modelBuilder.Entity<Reservation>(entity =>
         {
             entity.HasKey(e => e.reservationId);
