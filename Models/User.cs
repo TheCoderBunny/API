@@ -17,6 +17,6 @@ public class User
     public string? email { get; set; }
     [Required]
     public string? password { get; set; }
-
+    [JsonIgnore]
     public int? userType { get; set; }
 }

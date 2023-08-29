@@ -30,7 +30,8 @@ public class UserController : ControllerBase
 
         var user = _userRepository.GetUserByEmail(userEmail);
 
-        if (user.userType==0){
+        if (user.userType == 0)
+        {
             return Unauthorized();
         }
 
@@ -79,6 +80,17 @@ public class UserController : ControllerBase
         }
 
         return Ok(token);
+    }
+
+    [HttpGet]
+    [Route("current")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<User> CurrentUser() {
+        string? userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+
+        var user = _userRepository.GetUserByEmail(userEmail);
+
+        return Ok(user);
     }
 
     //Don't allow direct updates.  Make more specific controls for users so that they can't edit their "userType."
