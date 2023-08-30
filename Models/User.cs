@@ -19,4 +19,5 @@ public class User
     public string? password { get; set; }
     [JsonIgnore]
     public int? userType { get; set; }
+    public string? token { get; set; }//this is handed to newly logged in users
 }

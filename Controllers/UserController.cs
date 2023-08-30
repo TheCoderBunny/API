@@ -65,7 +65,7 @@ public class UserController : ControllerBase
 
     [HttpGet]
     [Route("login")]
-    public ActionResult<string> SignInUser(string email, string password)
+    public ActionResult<User> SignInUser(string email, string password)
     {
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
@@ -78,15 +78,19 @@ public class UserController : ControllerBase
         {
             return Unauthorized();
         }
-
-        return Ok(token);
+        var user = _userRepository.GetUserByEmail(email);
+        user.token=token;
+        return Ok(user);
     }
 
     [HttpGet]
     [Route("current")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<User> CurrentUser() {
         string? userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+
+        if (userEmail==null){
+            return Ok(new User());
+        }
 
         var user = _userRepository.GetUserByEmail(userEmail);
 
