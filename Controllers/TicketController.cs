@@ -22,22 +22,40 @@ public class TicketController : ControllerBase
         _userRepository = repository2;
     }
 
+    private readonly double[] ticketPrices = {//get the data internally
+        89.99,  //adult ticket
+        59.99   //child ticket
+        };
+
     [HttpPost]
-    [Route("create")]
+    [Route("createTickets")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<Ticket> CreateTicket(Ticket ticket)
+    public ActionResult<IEnumerable<Ticket>> CreateTickets(IEnumerable<Ticket> tickets)
     {
         string? userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
 
         var user = _userRepository.GetUserByEmail(userEmail);
 
-        ticket.userId=user.userId;
-
-        if (ticket == null || !ModelState.IsValid)
+        foreach (var ticket in tickets)
         {
-            return BadRequest();
+            //verification
+            ticket.userId = user.userId;
+
+            if (ticket == null || !ModelState.IsValid)
+            {
+                return BadRequest();
+            }
         }
-        _ticketRepository.CreateTicket(ticket);
+
+        //verify payment
+
+        //research transactions and see how I could apply it here for extra safety.
+
+        foreach (var ticket in tickets)
+        {
+            _ticketRepository.CreateTicket(ticket);
+        }
+
         return NoContent();
     }
 
@@ -50,7 +68,7 @@ public class TicketController : ControllerBase
 
         var user = _userRepository.GetUserByEmail(userEmail);
 
-        _ticketRepository.DeleteTicketFromUserIdByDayAndType(user.userId,day,type);
+        _ticketRepository.DeleteTicketFromUserIdByDayAndType(user.userId, day, type);
         return NoContent();
     }
 }
