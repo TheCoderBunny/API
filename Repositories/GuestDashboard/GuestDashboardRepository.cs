@@ -8,9 +8,12 @@ public class GuestDashboardRepository : IGuestDashboardRepository
 {
     private static string _myConnectionString = "server=127.0.0.1;uid=root;pwd=Password1!;database=bonitashores";
 
-    public DayTrip GetDayTripFromUser(int userId, DateTime day)
+    //also make a method for gathering data from the history so user's can contact customer service about it.
+    public DayTrip GetFutureTripFromDayAndUser(int userId, DateTime day)
     {
         DayTrip dayTrip=new DayTrip();
+
+        DateTime endSearchDate = day.AddYears(1);
 
         dayTrip.tickets = new List<Ticket>();
         dayTrip.bookings = new List<Booking>();
@@ -19,9 +22,10 @@ public class GuestDashboardRepository : IGuestDashboardRepository
         var conn = new MySqlConnection(_myConnectionString);
         conn.Open();
 
-        var command = new MySqlCommand("SELECT * FROM ticket WHERE userId = @userId AND day = @day;", conn);
+        var command = new MySqlCommand("SELECT * FROM ticket WHERE userId = @userId AND day BETWEEN @day AND @endSearchDate;", conn);
         command.Parameters.AddWithValue("@userId", userId);
         command.Parameters.AddWithValue("@day", day);
+        command.Parameters.AddWithValue("@endSearchDate", endSearchDate);
         command.Prepare();
 
         var reader = command.ExecuteReader();
@@ -37,9 +41,10 @@ public class GuestDashboardRepository : IGuestDashboardRepository
         }
         reader.Close();
 
-        command = new MySqlCommand("SELECT * FROM booking WHERE userId = @userId AND day = @day;", conn);
+        command = new MySqlCommand("SELECT * FROM booking WHERE userId = @userId AND day BETWEEN @day AND @endSearchDate;", conn);
         command.Parameters.AddWithValue("@userId", userId);
         command.Parameters.AddWithValue("@day", day);
+        command.Parameters.AddWithValue("@endSearchDate", endSearchDate);
         command.Prepare();
 
         reader = command.ExecuteReader();
@@ -55,9 +60,10 @@ public class GuestDashboardRepository : IGuestDashboardRepository
         }
         reader.Close();
 
-        command = new MySqlCommand("SELECT * FROM reservation WHERE userId = @userId AND day = @day;", conn);
+        command = new MySqlCommand("SELECT * FROM reservation WHERE userId = @userId AND day BETWEEN @day AND @endSearchDate;", conn);
         command.Parameters.AddWithValue("@userId", userId);
         command.Parameters.AddWithValue("@day", day);
+        command.Parameters.AddWithValue("@endSearchDate", endSearchDate);
         command.Prepare();
 
         reader = command.ExecuteReader();

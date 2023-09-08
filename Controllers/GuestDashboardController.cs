@@ -28,13 +28,13 @@ public class GuestDashboardController : ControllerBase
     [HttpGet]
     [Route("getTripByDay/{day:dateTime}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<DayTrip> GetGuestDashboardDay(DateTime day)
+    public ActionResult<DayTrip> GetGuestDashboardFutureFromDay(DateTime day)
     {
         string? userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
 
         var user = _userRepository.GetUserByEmail(userEmail);
 
-        DayTrip dayTrip = _guestDashboardRepository.GetDayTripFromUser(user.userId,day);
+        DayTrip dayTrip = _guestDashboardRepository.GetFutureTripFromDayAndUser(user.userId,day);
 
         return Ok(dayTrip);
     }

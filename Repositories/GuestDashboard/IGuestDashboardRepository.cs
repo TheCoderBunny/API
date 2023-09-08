@@ -4,5 +4,5 @@ namespace API.Repositories;
 
 public interface IGuestDashboardRepository
 {
-    DayTrip GetDayTripFromUser(int userId, DateTime day);
+    DayTrip GetFutureTripFromDayAndUser(int userId, DateTime day);
 }
