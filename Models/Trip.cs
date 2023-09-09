@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace API.Models;
 
-public class DayTrip
+public class Trip
 {
     public List<Ticket> tickets { get; set; }
     public List<Booking> bookings { get; set; }

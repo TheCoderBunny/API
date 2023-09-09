@@ -9,15 +9,15 @@ public class GuestDashboardRepository : IGuestDashboardRepository
     private static string _myConnectionString = "server=127.0.0.1;uid=root;pwd=Password1!;database=bonitashores";
 
     //also make a method for gathering data from the history so user's can contact customer service about it.
-    public DayTrip GetFutureTripFromDayAndUser(int userId, DateTime day)
+    public Trip GetFutureTripFromDayAndUser(int userId, DateTime day)
     {
-        DayTrip dayTrip=new DayTrip();
+        Trip trip=new Trip();
 
         DateTime endSearchDate = day.AddYears(1);
 
-        dayTrip.tickets = new List<Ticket>();
-        dayTrip.bookings = new List<Booking>();
-        dayTrip.reservations = new List<Reservation>();
+        trip.tickets = new List<Ticket>();
+        trip.bookings = new List<Booking>();
+        trip.reservations = new List<Reservation>();
 
         var conn = new MySqlConnection(_myConnectionString);
         conn.Open();
@@ -31,7 +31,7 @@ public class GuestDashboardRepository : IGuestDashboardRepository
         var reader = command.ExecuteReader();
         while (reader.Read())
         {
-            dayTrip.tickets.Add(new Ticket
+            trip.tickets.Add(new Ticket
             {
                 ticketId = reader.GetInt32("ticketId"),
                 day = reader.GetDateTime("day"),
@@ -50,7 +50,7 @@ public class GuestDashboardRepository : IGuestDashboardRepository
         reader = command.ExecuteReader();
         while (reader.Read())
         {
-            dayTrip.bookings.Add(new Booking
+            trip.bookings.Add(new Booking
             {
                 bookingId = reader.GetInt32("bookingId"),
                 day = reader.GetDateTime("day"),
@@ -69,7 +69,7 @@ public class GuestDashboardRepository : IGuestDashboardRepository
         reader = command.ExecuteReader();
         while (reader.Read())
         {
-            dayTrip.reservations.Add(new Reservation
+            trip.reservations.Add(new Reservation
             {
                 reservationId = reader.GetInt32("reservationId"),
                 day = reader.GetDateTime("day"),
@@ -81,6 +81,6 @@ public class GuestDashboardRepository : IGuestDashboardRepository
 
         conn.Close();
 
-        return dayTrip;
+        return trip;
     }
 }

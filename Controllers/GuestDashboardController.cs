@@ -26,16 +26,16 @@ public class GuestDashboardController : ControllerBase
     }
 
     [HttpGet]
-    [Route("getTripByDay/{day:dateTime}")]
+    [Route("getTripFutureFromDay/{day:dateTime}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<DayTrip> GetGuestDashboardFutureFromDay(DateTime day)
+    public ActionResult<Trip> GetGuestDashboardFutureFromDay(DateTime day)
     {
         string? userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
 
         var user = _userRepository.GetUserByEmail(userEmail);
 
-        DayTrip dayTrip = _guestDashboardRepository.GetFutureTripFromDayAndUser(user.userId,day);
+        Trip trip = _guestDashboardRepository.GetFutureTripFromDayAndUser(user.userId,day);
 
-        return Ok(dayTrip);
+        return Ok(trip);
     }
 }
