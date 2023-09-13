@@ -25,19 +25,32 @@ public class BookingController : ControllerBase
     [HttpPost]
     [Route("create")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<Booking> CreateBooking(Booking booking)
+    public ActionResult<IEnumerable<Booking>> CreateBooking(IEnumerable<Booking> booking)
     {
         string? userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
 
         var user = _userRepository.GetUserByEmail(userEmail);
 
-        booking.userId=user.userId;
-
-        if (booking == null || !ModelState.IsValid)
+        foreach (var bookingDay in booking)
         {
-            return BadRequest();
+            //verification
+            bookingDay.userId = user.userId;
+
+            if (bookingDay == null || !ModelState.IsValid)
+            {
+                return BadRequest();
+            }
         }
-        _bookingRepository.CreateBooking(booking);
+
+        //verify payment
+
+        //research transactions and see how I could apply it here for extra safety.
+
+        foreach (var bookingDay in booking)
+        {
+            _bookingRepository.CreateBooking(bookingDay);
+        }
+
         return NoContent();
     }
 
