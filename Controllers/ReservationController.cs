@@ -37,6 +37,9 @@ public class ReservationController : ControllerBase
         {
             return BadRequest();
         }
+
+        //verify that this reservation can be made.
+
         _reservationRepository.CreateReservation(reservation);
         return NoContent();
     }
