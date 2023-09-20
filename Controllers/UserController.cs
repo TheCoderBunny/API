@@ -65,7 +65,7 @@ public class UserController : ControllerBase
         }
 
         if (_userRepository.GetUserByEmail(user.email)!=null){
-            return BadRequest("Email is already in use");
+            return BadRequest("EmailAlreadyExists");
         }
 
         _userRepository.CreateUser(user);
