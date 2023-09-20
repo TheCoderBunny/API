@@ -59,6 +59,15 @@ public class UserController : ControllerBase
         {
             return BadRequest();
         }
+
+        if (user.email == null){
+            return BadRequest();
+        }
+
+        if (_userRepository.GetUserByEmail(user.email)!=null){
+            return BadRequest("Email is already in use");
+        }
+
         _userRepository.CreateUser(user);
         return NoContent();
     }
