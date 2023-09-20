@@ -44,16 +44,17 @@ public class ReservationController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete]
-    [Route("{day:dateTime}/{type:int}")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult DeleteReservationFromUserIdByDayAndType(DateTime day, int type)
-    {
-        string? userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+    //This should only be reserved for admins.
+    // [HttpDelete]
+    // [Route("{day:dateTime}/{type:int}")]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    // public ActionResult DeleteReservationFromUserIdByDayAndType(DateTime day, int type)
+    // {
+    //     string? userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
 
-        var user = _userRepository.GetUserByEmail(userEmail);
+    //     var user = _userRepository.GetUserByEmail(userEmail);
 
-        _reservationRepository.DeleteReservationFromUserIdByDayAndType(user.userId,day,type);
-        return NoContent();
-    }
+    //     _reservationRepository.DeleteReservationFromUserIdByDayAndType(user.userId,day,type);
+    //     return NoContent();
+    // }
 }

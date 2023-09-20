@@ -21,7 +21,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    [Route("getList")]
+    [Route("getListAdminOnly")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<IEnumerable<User>> GetUsers()
     {
